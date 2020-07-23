@@ -16,13 +16,8 @@ class FlutterVodUpload {
     var uploadAddress = UploadAddress.fromJson(json.decode(utf8.decode(base64Decode(item.uploadAddress))));
     var uploadAuth = UploadAuth.fromJson(json.decode(utf8.decode(base64Decode(item.uploadAuth))));
     var client = OSSClient(uploadAddress.Endpoint, MyCredentialProvider(Credentials(uploadAuth.AccessKeyId,uploadAuth.AccessKeySecret,uploadAuth.SecurityToken)));
-    var callbackRequest = OSSCallbackRequest.build(
-      'https://postman-echo.com/post',
-      systemParams: {
-        'filename': OSSCallbackRequest.VAR_OBJECT,
-      },
-    );
-    var response =await client.putObject(bucket: uploadAddress.Bucket, objectKey: uploadAddress.FileName, content: objectContent, contentType: 'multipart/form-data',callback: callbackRequest);
+ 
+    var response =await client.putObject(bucket: uploadAddress.Bucket, objectKey: uploadAddress.FileName, content: objectContent, contentType: 'multipart/form-data');
     return item.videoId;
   }
 }
